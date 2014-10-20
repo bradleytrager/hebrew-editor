@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title></title>
+	<style type="text/css" media="screen">
+		body {
+			height: 100%;
+		}
+		#editor {
+			height: 500px;
+			width: 50%;
+		}
+	</style>
+
+</head>
+<body>
+	<div ng-app="MyApp" ng-controller="MyController">
+		<div id="editor" ui-codemirror="{ onLoad : codemirrorLoaded }" ></div>
+	</div>
+	<link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
+	<script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
+	<script type="text/javascript" src="bower_components/angular/angular.js"></script>
+	<script type="text/javascript" src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+
+		<script src="/channel/bcsocket.js"></script>
+		<script src="/share/share.js"></script>
+		<script src="/share/cm.js"></script>
+
+
+	<script>
+		var myAppModule = angular.module('MyApp', ['ui.codemirror']);
+		myAppModule.controller('MyController', [ '$scope', function($scope) {
+
+		$scope.codemirrorLoaded = function(_editor){
+	    // Editor part
+	    var _doc = _editor.getDoc();
+	    _editor.focus();
+
+	    // Options
+	    // _editor.setOption('firstLineNumber', 10);
+	    // _doc.markClean()
+	    sharejs.open('hello', 'text', function(error, doc) {
+			doc.attach_cm(_editor);
+		});
+	    // Events
+	    // _editor.on("beforeChange", function(){ ... });
+	    // _editor.on("change", function(){ ... });
+	};
+
+	}]);
+	</script>
+</body>
+</html>
