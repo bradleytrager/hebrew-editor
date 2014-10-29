@@ -23,7 +23,10 @@
 		<script src="/share/ace.js"></script>
 		<script>
 		var editor = ace.edit("editor");
-		sharejs.open('hello', 'text', function(error, doc) {
+        var docName = location.hash.substr(1);
+        if(docName.length < 1)
+            docName = 'hello';
+		sharejs.open(docName, 'text', function(error, doc) {
 		doc.attach_ace(editor);
 		});
 		</script>
