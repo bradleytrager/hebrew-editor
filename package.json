@@ -11,6 +11,7 @@
   "dependencies": {
     "connect": "^1.9.2",
     "mongoose": "^3.8.17",
+    "redis": "^0.12.1",
     "share": "^0.6.3"
   }
 }

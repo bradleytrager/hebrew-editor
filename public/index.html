@@ -17,14 +17,16 @@
 	<body>
 		<textarea id="editor" dir="rtl"></textarea>
 
-		<script src="http://ajaxorg.github.com/ace/build/src/ace.js"></script>
 		<script src="/channel/bcsocket.js"></script>
 		<script src="/share/share.js"></script>
 		<script src="/share/textarea.js"></script>
 		<script>
 		var editor = document.getElementById('editor');
-		sharejs.open('hello', 'text', function(error, doc) {
-		doc.attach_textarea(editor);
+		var docName = location.hash.substr(1);
+        if(docName.length < 1)
+            docName = 'hello';
+		sharejs.open(docName, 'text', function(error, doc) {
+			doc.attach_textarea(editor);
 		});
 		</script>
 	</body>
