@@ -3,36 +3,48 @@
 <head>
 	<meta charset="utf-8">
 	<title></title>
+	<link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
+	<link rel="stylesheet" type="text/css" href="bower_components/codemirror/theme/monokai.css">
 	<style type="text/css" media="screen">
-		body {
+		
+		#editor {
+			float:left;
+			width: 49%;
+		}
+		div.CodeMirror {
 			height: 100%;
 		}
-		#editor {
-			height: 500px;
-			width: 50%;
+
+		div.CodeMirror-scroll {
+			height: 100%;
 		}
 	</style>
 
 </head>
 <body>
 	<div ng-app="MyApp" ng-controller="MyController">
-		<div id="editor" ui-codemirror="{ onLoad : codemirrorLoaded }" ></div>
+		<div contentEditable="true" style="text-align: right;float:left;width:49%;"></div>
+		<div id="editor" ui-codemirror="{ onLoad : codemirrorLoaded }" ui-codemirror-opts="editorOptions" ></div>
 	</div>
-	<link rel="stylesheet" type="text/css" href="bower_components/codemirror/lib/codemirror.css">
 	<script type="text/javascript" src="bower_components/codemirror/lib/codemirror.js"></script>
 	<script type="text/javascript" src="bower_components/angular/angular.js"></script>
 	<script type="text/javascript" src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
 
-		<script src="/channel/bcsocket.js"></script>
-		<script src="/share/share.js"></script>
-		<script src="/share/cm.js"></script>
+	<script src="/channel/bcsocket.js"></script>
+	<script src="/share/share.js"></script>
+	<script src="/share/cm.js"></script>
 
 
 	<script>
 		var myAppModule = angular.module('MyApp', ['ui.codemirror']);
 		myAppModule.controller('MyController', [ '$scope', function($scope) {
-
-		$scope.codemirrorLoaded = function(_editor){
+			$scope.editorOptions = {
+				lineWrapping : true,
+				lineNumbers: true,
+				theme: "monokai",
+				rtlMoveVisually: true
+			};
+			$scope.codemirrorLoaded = function(_editor){
 	    // Editor part
 	    var _doc = _editor.getDoc();
 	    _editor.focus();
@@ -41,14 +53,14 @@
 	    // _editor.setOption('firstLineNumber', 10);
 	    // _doc.markClean()
 	    sharejs.open('hello', 'text', function(error, doc) {
-			doc.attach_cm(_editor);
-		});
+	    	doc.attach_cm(_editor);
+	    });
 	    // Events
 	    // _editor.on("beforeChange", function(){ ... });
 	    // _editor.on("change", function(){ ... });
 	};
 
-	}]);
+}]);
 	</script>
 </body>
 </html>
