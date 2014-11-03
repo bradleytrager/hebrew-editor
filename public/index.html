@@ -6,27 +6,33 @@
 		<title></title>
 		<link rel="stylesheet" href="">
 		<style type="text/css" media="screen">
-		#editor {
-			width: 200px;
+		textarea {
+			width: 49%;
 			height: 200px;
+			font-size: 12pt;
 		}
 			
 		</style>
 		
 	</head>
 	<body>
-		<textarea id="editor" dir="rtl"></textarea>
+		<textarea id="hebrew-editor" dir="rtl"></textarea>
+		<textarea id="editor"></textarea>
 
 		<script src="/channel/bcsocket.js"></script>
 		<script src="/share/share.js"></script>
 		<script src="/share/textarea.js"></script>
 		<script>
 		var editor = document.getElementById('editor');
+		var hebrewEditor = document.getElementById('hebrew-editor');
 		var docName = location.hash.substr(1);
         if(docName.length < 1)
             docName = 'hello';
 		sharejs.open(docName, 'text', function(error, doc) {
 			doc.attach_textarea(editor);
+		});
+		sharejs.open(docName + '-hebrew', 'text', function(error, doc) {
+			doc.attach_textarea(hebrewEditor);
 		});
 		</script>
 	</body>
