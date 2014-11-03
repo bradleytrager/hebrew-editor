@@ -6,15 +6,7 @@ var server = connect(
 	connect.static(__dirname + '/public')
 );
 
-var options = {
-	db: {
-		type: 'pg',
-		host: 'localhost',
-		user: 'root',
-		password: 'root',
-		charset: 'utf8_general_ci'
-	}
-}; // See docs for options. {type: 'redis'} to enable persistance.
+var options = require('./options'); // See docs for options. {type: 'redis'} to enable persistance.
 
 // Attach the sharejs REST and Socket.io interfaces to the server
 sharejs.attach(server, options);
