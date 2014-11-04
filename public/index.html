@@ -4,58 +4,18 @@
 		<meta charset="utf-8">
 		<meta http-equiv="X-UA-Compatible" content="IE=edge">
 		<title></title>
-		<link rel="stylesheet" href="">
-		<style type="text/css" media="screen">
-		textarea {
-			width: 49%;
-			height: 200px;
-			font-size: 12pt;
-		}
-			
-		</style>
-		
-	</head>
-	<body>
-		<div ng-app="MyApp">
-		<ng-view></ng-view>
-			
-		</div>
-
+		<link rel="stylesheet" href="css/styles.css">
 		<script src="/channel/bcsocket.js"></script>
 		<script src="/share/share.js"></script>
 		<script src="/share/textarea.js"></script>
+	</head>
+	<body>
+		<div id="app">
+			<div ng-view></div>
+		</div>
+		
 		<script type="text/javascript" src="bower_components/angular/angular.js"></script>
 		<script type="text/javascript" src="bower_components/angular-route/angular-route.js"></script>
-		<script>
-				var myAppModule = angular.module('MyApp', ['ngRoute'])
-					.config(['$routeProvider',
-						function($routeProvider) {
-							$routeProvider.
-							when('/:author/:title/:chapter', {
-								controller: 'MyController',
-								templateURL:'text-areas.html'
-							}).
-							otherwise({
-								redirectTo: '/'
-							});
-						}
-					])
-					.controller('MyController', ['$scope', '$routeParams',
-						function($scope, $routeParams) {
-							var docName = $routeParams.author + '.' + $routeParams.title + '.' + $routeParams.chapter;
-							var editor = document.getElementById('editor');
-							var hebrewEditor = document.getElementById('hebrew-editor');
-							// var docName = location.hash.substr(1);
-							// if (docName.length < 1)
-							// 	docName = 'hello';
-							sharejs.open(docName, 'text', function(error, doc) {
-								doc.attach_textarea(editor);
-							});
-							sharejs.open(docName + '.hebrew', 'text', function(error, doc) {
-								doc.attach_textarea(hebrewEditor);
-							});
-						}
-					]);
-		</script>
+		<script type="text/javascript" src="js/main.js"></script>
 	</body>
 </html>
