@@ -1,1 +1,5 @@
-<h1 ng-bind="message"></h1>
+<ul>
+	<li ng-repeat="doc in docs">
+		<a ng-href="#/{{doc.link}}">{{doc.title}}</a>
+	</li>
+</ul>

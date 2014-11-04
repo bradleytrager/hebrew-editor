@@ -1,10 +1,15 @@
-var connect = require('connect'),
-	sharejs = require('share').server;
+var express = require('express');
+var	sharejs = require('share').server;
+var shareDocs = require('./shareDocs.js');
 
-var server = connect(
-	connect.logger(),
-	connect.static(__dirname + '/public')
-);
+var server = express();
+server.use(express.static(__dirname + '/public'));
+
+server.get('/docs', function(req, res) {
+	shareDocs.findAllDocs(function(docs) {
+		res.send(docs);
+	});
+});
 
 var options = require('./options'); // See docs for options. {type: 'redis'} to enable persistance.
 

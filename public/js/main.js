@@ -1,14 +1,10 @@
-'use strict'
-angular.module('hebrew-editor', ['ngRoute']);
-
-angular.module('hebrew-editor').controller('editorController', ['$scope', '$routeParams',
+angular.module('hebrew-editor', ['ngRoute'])
+.controller('editorController', ['$scope', '$routeParams',
 	function($scope, $routeParams) {
 		var docName = $routeParams.author + '.' + $routeParams.title + '.' + $routeParams.chapter;
 		var editor = document.getElementById('editor');
 		var hebrewEditor = document.getElementById('hebrew-editor');
-		// var docName = location.hash.substr(1);
-		// if (docName.length < 1)
-		// 	docName = 'hello';
+
 		sharejs.open(docName, 'text', function(error, doc) {
 			doc.attach_textarea(editor);
 		});
@@ -16,24 +12,50 @@ angular.module('hebrew-editor').controller('editorController', ['$scope', '$rout
 			doc.attach_textarea(hebrewEditor);
 		});
 	}
-]);
-
-angular.module('hebrew-editor').controller('homeController', ['$scope',
-	function($scope) {
-		console.log("home");
-		$scope.message = "hello";
+])
+.controller('homeController', ['$scope', '$http',
+	function($scope, $http) {
+		$scope.docs = [];
+		$http.get("/docs").then(function(res) {
+			var docs = res.data;
+			angular.forEach(docs, function(doc) {
+				var parts = doc._id.split(".");
+				if (parts.length === 3){
+					doc.title = formatTitle(parts);
+					doc.link = parts.join("/");
+					$scope.docs.push(doc);
+				}
+				// doc.link = doc._id.replace(/\./g, "/");
+			});
+			// $scope.docs = docs;
+			console.log($scope.docs);
+		});
+		function formatTitle(parts) {
+			var formattedParts = []; 
+			var formattedPart;
+			angular.forEach(parts, function(part) {
+				formattedPart = part.split("_");
+				angular.forEach(formattedPart, function(word, index) {
+					formattedPart[index] = capitalizeFirstLetter(word);
+				});
+				formattedParts.push(formattedPart.join(" "));
+			});
+			return formattedParts.join(" - ");
+		}
+		function capitalizeFirstLetter(string) {
+		    return string.charAt(0).toUpperCase() + string.slice(1);
+		}
 	}
-]);
-
-angular.module('hebrew-editor').config(['$routeProvider',
+])
+.config(['$routeProvider',
 	function($routeProvider) {
 		$routeProvider.when('/:author/:title/:chapter', {
-			template: '<textarea id="hebrew-editor" dir="rtl"></textarea><textarea id="editor"></textarea>',
+			templateUrl: 'partials/text-areas.html',
 			controller: 'editorController'
 		});
 
 		$routeProvider.when('/home', {
-			template: '<h1 ng-bind="message"></h1>',
+			templateUrl: 'partials/home.html',
 			controller: 'homeController'
 		});
 
