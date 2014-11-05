@@ -19,7 +19,7 @@ angular.module('hebrew-editor', ['ngRoute'])
 			$scope.delete = function(id) {
 				$http.delete("/docs/" + id).then(function(response) {
 					console.log(response);
-				});	
+				});
 			}
 
 			$http.get("/docs").then(function(res) {
@@ -36,6 +36,22 @@ angular.module('hebrew-editor', ['ngRoute'])
 				// $scope.docs = docs;
 				console.log($scope.docs);
 			});
+
+			$scope.getDoc = function(docName) {
+				$http.get("/docs/" + docName).then(function(res) {
+					console.log(res);
+				});
+			};
+
+			$scope.getDoc('test.test.1');
+
+			$scope.create = function(docName) {
+				$http.post("/docs", {
+					docName: docName
+				}, function(data) {
+					console.log(data);
+				});
+			};
 
 			function formatTitle(parts) {
 				var formattedParts = [];

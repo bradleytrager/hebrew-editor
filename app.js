@@ -1,13 +1,29 @@
 var express = require('express');
+var bodyParser = require('body-parser');
 var	sharejs = require('share').server;
 var shareDocs = require('./shareDocs.js');
 
 var server = express();
-server.use(express.static(__dirname + '/public'));
 
+server.use(express.static(__dirname + '/public'));
+// TODO: this line is causing an exception
+// server.use(bodyParser.json());
 server.get('/docs', function(req, res) {
 	shareDocs.findAllDocs(function(docs) {
 		res.send(docs);
+	});
+});
+
+server.get('/docs/:id', function(req, res) {
+	model.getSnapshot(req.params.id, function(error, data) {
+		res.send(data);
+	});
+});
+
+server.post('/docs', function(req, res) {
+	var docName = req.body.docName;
+	model.create(docName, 'text', function(error, doc) {
+		res.send(doc);
 	});
 });
 
