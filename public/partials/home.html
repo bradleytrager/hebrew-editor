@@ -1,5 +1,5 @@
 <ul>
 	<li ng-repeat="doc in docs">
-		<a ng-href="#/{{doc.link}}">{{doc.title}}</a>
+		<a ng-href="#/{{doc.link}}">{{doc.title}}</a><button ng-click="delete(doc._id)">Delete</button>
 	</li>
 </ul>

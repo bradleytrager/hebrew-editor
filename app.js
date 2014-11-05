@@ -11,8 +11,14 @@ server.get('/docs', function(req, res) {
 	});
 });
 
-var options = require('./options'); // See docs for options. {type: 'redis'} to enable persistance.
+server.delete('/docs/:id', function(req, res) {
+	model.delete(req.params.id, function(data) {
+		res.send(data);
+	});
+});
 
+var options = require('./options'); // See docs for options. {type: 'redis'} to enable persistance.
+var model = sharejs.createModel(options);
 // Attach the sharejs REST and Socket.io interfaces to the server
 sharejs.attach(server, options);
 
