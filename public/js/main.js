@@ -11,6 +11,15 @@ angular.module('hebrew-editor', ['ngRoute'])
 			sharejs.open(docName + '.hebrew', 'text', function(error, doc) {
 				doc.attach_textarea(hebrewEditor);
 			});
+
+			$scope.rename = function(newName) {
+				sharejs.open(newName, 'text', function(error, doc) {
+					doc.insert(0, editor.value);
+				});
+				sharejs.open(newName + '.hebrew', 'text', function(error, doc) {
+					doc.insert(0, hebrewEditor.value);
+				});
+			};
 		}
 	])
 	.controller('homeController', ['$scope', '$http',
