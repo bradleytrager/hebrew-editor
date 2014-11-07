@@ -1,7 +1,14 @@
 angular.module('hebrew-editor', ['ngRoute'])
-	.controller('editorController', ['$scope', '$routeParams',
-		function($scope, $routeParams) {
-			var docName = $routeParams.author + '.' + $routeParams.title + '.' + $routeParams.chapter;
+	.controller('editorController', ['$scope', '$routeParams', '$location',
+		function($scope, $routeParams, $location) {
+			$scope.author = $routeParams.author;
+			$scope.title = $routeParams.title;
+			$scope.chapter = $routeParams.chapter;
+
+			var makeDocName = function (author, title, chapter) {
+				return author + '.' + title + '.' + chapter;
+			};
+			var docName = makeDocName($scope.author, $scope.title, $scope.chapter);
 			var editor = document.getElementById('editor');
 			var hebrewEditor = document.getElementById('hebrew-editor');
 
@@ -12,13 +19,16 @@ angular.module('hebrew-editor', ['ngRoute'])
 				doc.attach_textarea(hebrewEditor);
 			});
 
-			$scope.rename = function(newName) {
+
+			$scope.rename = function(author, title, chapter) {
+				var newName = makeDocName(author, title, chapter);
 				sharejs.open(newName, 'text', function(error, doc) {
 					doc.insert(0, editor.value);
 				});
 				sharejs.open(newName + '.hebrew', 'text', function(error, doc) {
 					doc.insert(0, hebrewEditor.value);
 				});
+
 			};
 		}
 	])
