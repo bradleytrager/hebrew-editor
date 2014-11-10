@@ -1,18 +1,19 @@
 @import url(http://fonts.googleapis.com/earlyaccess/notosanshebrew.css);
+@import url(http://fonts.googleapis.com/css?family=Noto+Sans);
 
 body {
-	font-family: 'Noto Sans Hebrew', serif;
+	font-family: 'Noto Sans', sans-serif;
 }
 
 #hebrew-editor, #editor {
 	width: 49%;
-	height: 1000px;
-	font-family: 'Noto Sans Hebrew', serif;
+	height: 1000px;	
 	font-size: 13pt;
 }
 
 #hebrew-editor {
 	font-size: 15pt;
+	font-family: 'Noto Sans Hebrew', serif;
 }
 
 @media (max-width: 767px) {
