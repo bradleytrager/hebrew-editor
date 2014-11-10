@@ -14,3 +14,10 @@ body {
 #hebrew-editor {
 	font-size: 15pt;
 }
+
+@media (max-width: 767px) {
+	#hebrew-editor, #editor {
+		width: 100%;
+		height: 700px;
+	}
+}
