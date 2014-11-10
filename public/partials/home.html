@@ -1,5 +1,10 @@
-<ul>
+<ul class="list-unstyled">
 	<li ng-repeat="doc in docs">
-		<a ng-href="#/{{doc.link}}">{{doc.title}}</a><button ng-click="delete(doc._id)">Delete</button>
+		<div class="col-sm-12">
+			<button ng-click="delete(doc)" class="btn btn-xs btn-default"><span class="glyphicon glyphicon-minus-sign"></span></button>
+			<h4 style="display:inline;">
+			<a ng-href="#/{{doc.link}}">{{doc.author}} - {{doc.title}} - {{doc.chapter}}</a>
+			</h4>
+		</div>
 	</li>
 </ul>

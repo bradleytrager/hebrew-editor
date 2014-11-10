@@ -1,10 +1,15 @@
 <div>
-	<input type="text" placeholder-"Author" ng-model="author">
-	<input type="text" placeholder-"Title" ng-model="title">
-	<input type="text" placeholder-"Chapter" ng-model="chapter">
-	<button ng-click="rename(author, title, chapter)">Rename</button>
+<form class="form-inline" role="form">
+	<input type="text" class="form-control" placeholder-"Author" ng-model="author">
+	<input type="text" class="form-control" placeholder-"Title" ng-model="title">
+	<input type="text" class="form-control" placeholder-"Chapter" ng-model="chapter">
+	<button class="btn btn-default" ng-click="rename(author, title, chapter)">Rename</button>
+	</form>
 </div>
+<hr>
 <div>
-	<textarea id="hebrew-editor" dir="rtl"></textarea>
-	<textarea id="editor"></textarea>
+	<form class="form-inline" role="form">
+		<textarea id="hebrew-editor" class="form-control"  dir="rtl"></textarea>
+		<textarea id="editor" class="form-control"></textarea>
+	</form>
 </div>

@@ -5,7 +5,7 @@ angular.module('hebrew-editor', ['ngRoute'])
 			$scope.title = $routeParams.title;
 			$scope.chapter = $routeParams.chapter;
 
-			var makeDocName = function (author, title, chapter) {
+			var makeDocName = function(author, title, chapter) {
 				return author + '.' + title + '.' + chapter;
 			};
 			var docName = makeDocName($scope.author, $scope.title, $scope.chapter);
@@ -35,31 +35,51 @@ angular.module('hebrew-editor', ['ngRoute'])
 	.controller('homeController', ['$scope', '$http',
 		function($scope, $http) {
 			$scope.docs = [];
-			$scope.delete = function(id) {
-				$http.delete("/docs/" + id).then(function(response) {
-					console.log(response);
+
+			function loadDocs() {
+				$scope.docs = [];
+
+				$http.get("/docs").then(function(res) {
+					var docs = res.data;
+					angular.forEach(docs, function(doc) {
+						var parts = doc._id.split(".");
+						if (parts.length === 3) {
+							doc.author = underscoreToCaps(parts[0]);
+							doc.title = underscoreToCaps(parts[1]);
+							doc.chapter = parseInt(parts[2], 10);
+							doc.link = parts.join("/");
+							$scope.docs.push(doc);
+						}
+					});
+
+					$scope.docs.sort(function(a, b) {
+						var aTitle = a.title.split(" - ")[1];
+						var bTitle = b.title.split(" - ")[1];
+						if (a.title > b.title) {
+							return 1;
+						} else if (a.title < b.title) {
+							return -1;
+						} else if (a.chapter < b.chapter) {
+							return -1;
+						} else if (a.chapter > b.chapter) {
+							return 1;
+						}
+					});
+
+					console.log($scope.docs);
 				});
 			}
 
-			$http.get("/docs").then(function(res) {
-				var docs = res.data;
-				angular.forEach(docs, function(doc) {
-					var parts = doc._id.split(".");
-					if (parts.length === 3) {
-						doc.title = formatTitle(parts);
-						doc.link = parts.join("/");
-						doc.number = parseInt(parts[2]);
-						$scope.docs.push(doc);
+			loadDocs();
 
-					}
-					// doc.link = doc._id.replace(/\./g, "/");
-				});
-				$scope.docs.sort(function(a, b) {
-					return a.number > b.number;
-				});
-				// $scope.docs = docs;
-				console.log($scope.docs);
-			});
+			$scope.delete = function(doc) {
+				if (confirm("Are you sure you want to delete " + doc.title + " - " + doc.chapter + "?")) {
+					$http.delete("/docs/" + doc._id).then(function(response) {
+						console.log(response);
+					});
+					loadDocs();
+				}
+			}
 
 			$scope.getDoc = function(docName) {
 				$http.get("/docs/" + docName).then(function(res) {
@@ -77,15 +97,20 @@ angular.module('hebrew-editor', ['ngRoute'])
 				});
 			};
 
+			function underscoreToCaps(underscoredWords) {
+				var words = underscoredWords.split("_");
+				angular.forEach(words, function(word, index) {
+					words[index] = capitalizeFirstLetter(word);
+				});
+
+				return words.join(" ");
+			}
+
 			function formatTitle(parts) {
 				var formattedParts = [];
 				var formattedPart;
 				angular.forEach(parts, function(part) {
-					formattedPart = part.split("_");
-					angular.forEach(formattedPart, function(word, index) {
-						formattedPart[index] = capitalizeFirstLetter(word);
-					});
-					formattedParts.push(formattedPart.join(" "));
+					formattedParts.push(underscoreToCaps(part));
 				});
 				return formattedParts.join(" - ");
 			}
